@@ -1,0 +1,21 @@
+    {
+    "baseCurrency" : "USD",
+    "assets" : [
+        {
+            "Ticker" : "BTC",
+            "Qty" : 33
+        },
+        {
+            "Ticker" : "ETH",
+            "Qty": 33
+        },
+        {
+            "Ticker" : "KRRR",
+            "Qty": 33
+        },
+        {
+            "Ticker" : "ZEC",
+            "Qty" : 33
+        }
+    ]
+}

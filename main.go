@@ -5,17 +5,24 @@ import (
 )
 
 func main() {
-	myAssets := make(UserAssets)
-	myAssets["bitcoin"] = &Asset{"BTC", 108, 0, 0, 0, 0, 0, 0}
-	myAssets["ethereum"] = &Asset{"ETH", 108, 0, 0, 0, 0, 0, 0}
-	myAssets["decred"] = &Asset{"DCR", 108, 0, 0, 0, 0, 0, 0}
+	fmt.Println("Simple Console Portfolio for Digital Assets")
 
-	//SyncAssets with global data
-	SyncAssets(myAssets)
+	//read config file
+	Config = ReadConfig()
+	fmt.Println("config file: ", Config)
+	fmt.Println("Base Currency is: ", Config.BaseCurrency)
 
-	//calculate portfolio value
-	pBTC, pFIAT := CalcPortfolio(myAssets)
+	coins, err := GetCoinList()
+	if err != nil {
+		return
+	}
 
-	fmt.Println(pBTC, "btc")
-	fmt.Println(pFIAT, "USD")
+	portfolio := CheckCoins(Config.Assets, coins)
+
+	portfolio, err = SyncPortfolio(portfolio)
+	if err != nil {
+		return
+	}
+
+	PrintAssets(portfolio)
 }
