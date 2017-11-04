@@ -1,3 +1,4 @@
 # crypto-portfolio
-Crypto currency asset manager for the terminal. Written in Go
+Simple crypto currency asset manager for the terminal.
 
+![console](pic.jpg)
