@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 )
 
@@ -22,13 +23,13 @@ func ReadConfig() (configFile ConfigFile) {
 	//get binary dir
 	//os.Args doesn't work the way we want with "go run". You can use next line
 	//for local dev, but use the original for production.
-	dir, err := filepath.Abs("./") //local dev
-	//dir, err := filepath.Abs(filepath.Dir(os.Args[0])) //production-binary
+	//dir, err := filepath.Abs("./") //local dev
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0])) //production-binary
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("Reading config file...")
+	log.Println("Reading config file")
 	file := dir + "/config.json"
 	configFileData, err := ioutil.ReadFile(file)
 	if err != nil {

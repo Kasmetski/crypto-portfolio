@@ -1,5 +1,3 @@
 # crypto-portfolio
-Crypto currency asset manager. Written in Go
+Crypto currency asset manager for the terminal. Written in Go
 
-
-in progress...

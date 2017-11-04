@@ -3,19 +3,19 @@
     "assets" : [
         {
             "Ticker" : "BTC",
-            "Qty" : 33
+            "Qty" : 3
         },
         {
             "Ticker" : "ETH",
-            "Qty": 33
+            "Qty": 3
         },
         {
             "Ticker" : "KRRR",
-            "Qty": 33
+            "Qty": 3
         },
         {
             "Ticker" : "ZEC",
-            "Qty" : 33
+            "Qty" : 3
         }
     ]
 }

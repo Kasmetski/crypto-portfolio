@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
 )
 
 func main() {
 	fmt.Println("Simple Console Portfolio for Digital Assets")
+	fmt.Println("https://github.com/Kasmetski/crypto-portfolio")
 
 	//read config file
 	Config = ReadConfig()
@@ -17,10 +19,11 @@ func main() {
 		return
 	}
 
-	portfolio := CheckCoins(Config.Assets, coins)
+	//portfolio := CheckCoins(Config.Assets, coins)
 
-	portfolio, err = SyncPortfolio(portfolio)
+	portfolio, err := SyncPortfolio(Config.Assets, coins)
 	if err != nil {
+		log.Println("Error with portfolio sync: ", err)
 		return
 	}
 

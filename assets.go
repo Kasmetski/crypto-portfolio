@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 //Asset struct
 type Asset struct {
@@ -17,16 +20,18 @@ type Assets []Asset
 //PrintAssets used for simple portfolio view
 func PrintAssets(assets Assets) {
 	var totalBTCValue, totalFiatValue float64
-	fmt.Println("--------")
-	fmt.Printf("|%11s|%6s|%11s|%8s|%8s|\n", "Name", "Ticker", "Quantity", "BTCPrice", Config.BaseCurrency)
+
+	fmt.Println(strings.Repeat("-", 53))
+	fmt.Printf("|%11s|%6s|%11s|%8s|%11s|\n", "Name", "Ticker", "Quantity", "BTCPrice", Config.BaseCurrency)
+
 	for _, coin := range assets {
-		fmt.Printf("|%11s|%6s|%11f|%8f|%8.2f|\n", coin.Name, coin.Ticker, coin.Qty, coin.BTCPrice, coin.FiatPrice)
+		fmt.Printf("|%11s|%6s|%11.03f|%8f|%11.2f|\n", coin.Name, coin.Ticker, coin.Qty, coin.BTCPrice, coin.FiatPrice)
 
 		totalBTCValue += coin.Qty * coin.BTCPrice
 		totalFiatValue += coin.Qty * coin.FiatPrice
 	}
-	fmt.Println("--------")
-	fmt.Println("Total value (BTC): ", totalBTCValue)
-	fmt.Println("Total value (FIAT): ", totalFiatValue, Config.BaseCurrency)
-	fmt.Println("--------")
+	fmt.Println(strings.Repeat("-", 53))
+	fmt.Printf("Total value : %.8f BTC\n", totalBTCValue)
+	fmt.Printf("Total value : %.2f %s\n", totalFiatValue, Config.BaseCurrency)
+	fmt.Println(strings.Repeat("-", 53))
 }

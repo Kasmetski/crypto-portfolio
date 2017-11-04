@@ -62,8 +62,39 @@ func GetCoinList() (Coins, error) {
 	return data.Data, err
 }
 
+//SyncPortfolio fetch prices from api and calculate total portfolio value
+func SyncPortfolio(assets Assets, coins Coins) (portfolio Assets, err error) {
+	//Check portfolio for invalid coins/entries
+	portfolio = checkPortfolio(assets, coins)
+
+	//storing coin's ticker in an array
+	var a []string
+	for _, asset := range portfolio {
+		a = append(a, asset.Ticker)
+	}
+
+	//join into a string
+	from := strings.Join(a, ",")
+	to := "BTC," + Config.BaseCurrency
+	url := URL_API + "pricemulti?fsyms=" + from + "&tsyms=" + to
+
+	//get latest prices
+	currentPrices, err := getCurrentPrice(url)
+	if err != nil {
+		log.Println("SyncPortfolio(): ", err)
+		return
+	}
+
+	for i, v := range portfolio {
+		portfolio[i].BTCPrice = currentPrices[v.Ticker]["BTC"]
+		portfolio[i].FiatPrice = currentPrices[v.Ticker][Config.BaseCurrency]
+	}
+
+	return
+}
+
 //CheckCoins protfolio input
-func CheckCoins(assets Assets, coins Coins) (newList Assets) {
+func checkPortfolio(assets Assets, coins Coins) (newList Assets) {
 	for i, asset := range assets {
 		//check if asset is in the coinlist
 		if coins[asset.Ticker].Name != "" {
@@ -76,33 +107,7 @@ func CheckCoins(assets Assets, coins Coins) (newList Assets) {
 	}
 	log.Println("Checking coinlist completed.")
 
-	return newList
-}
-
-//SyncPortfolio fetch prices from api and calculate total portfolio value
-func SyncPortfolio(assets Assets) (Assets, error) {
-	//storing coin's ticker in an array
-	var a []string
-	for _, asset := range assets {
-		a = append(a, asset.Ticker)
-	}
-	//join into a string
-	from := strings.Join(a, ",")
-	to := "BTC," + Config.BaseCurrency
-	url := URL_API + "pricemulti?fsyms=" + from + "&tsyms=" + to
-
-	//get latest prices
-	currentPrices, err := getCurrentPrice(url)
-	if err != nil {
-		log.Println("SyncPortfolio(): ", err)
-	}
-
-	for i, v := range assets {
-		assets[i].BTCPrice = currentPrices[v.Ticker]["BTC"]
-		assets[i].FiatPrice = currentPrices[v.Ticker][Config.BaseCurrency]
-	}
-
-	return assets, err
+	return
 }
 
 func getCurrentPrice(url string) (map[string]map[string]float64, error) {
